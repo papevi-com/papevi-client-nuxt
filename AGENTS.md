@@ -29,7 +29,7 @@ Key files:
 Follow this sequence on every task, no matter how small:
 
 1. **Understand** — read the relevant source files; use `grep`/`glob`/`view` to explore before touching anything.
-2. **Docs** — consult current Nuxt 4 docs (`https://nuxt.com/docs`) and Vue 3 docs (`https://vuejs.org/guide`) where applicable.
+2. **Docs** — consult the Papevi API docs (`https://papevi.com/docs`), Nuxt 4 docs (`https://nuxt.com/docs`), and Vue 3 docs (`https://vuejs.org/guide`) where applicable.
 3. **Plan** — outline the minimal, targeted change set before writing code.
 4. **Implement** — apply changes using the TDD red-green-refactor cycle (invoke skill: `tdd`).
 5. **Validate** — run all quality commands (see below) and fix every failure before finishing.

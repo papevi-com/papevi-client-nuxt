@@ -8,6 +8,9 @@ description: >-
 
 # API architecture — Repository pattern
 
+> **API reference**: always consult the full endpoint and schema documentation at
+> **https://papevi.com/docs** before implementing or modifying a repository.
+
 All HTTP calls to `https://api.papevi.com` follow a two-layer pattern:
 
 ```
@@ -46,25 +49,60 @@ The token comes from `runtimeConfig.apiToken`, which is populated from the
 
 ## Repository composables — data-access layer
 
-One file per API resource, e.g. `app/repositories/useProductsRepository.ts`:
+One file per API resource. Real examples used in this project:
+
+### Pages — `app/repositories/usePagesRepository.ts`
 
 ```ts
 import { useApi } from "../composables/useApi";
 
-export interface Product {
+export interface Page {
   id: string;
-  name: string;
+  slug: string;
+  title: string;
+  content: string;
   [key: string]: unknown;
 }
 
-export const useProductsRepository = () => {
+export const usePagesRepository = () => {
   const api = useApi();
   return {
-    findAll: (): Promise<Product[]> => api<Product[]>("/products"),
-    findById: (id: string): Promise<Product> => api<Product>(`/products/${id}`),
+    findAll: (): Promise<Page[]> => api<Page[]>("/pages"),
+    findBySlug: (slug: string): Promise<Page> => api<Page>(`/pages/${slug}`),
   };
 };
 ```
+
+### Menus — `app/repositories/useMenusRepository.ts`
+
+```ts
+import { useApi } from "../composables/useApi";
+
+interface MenuItem {
+  id: string;
+  label: string;
+  url: string;
+  children?: MenuItem[];
+  [key: string]: unknown;
+}
+
+export interface Menu {
+  id: string;
+  slug: string;
+  items: MenuItem[];
+  [key: string]: unknown;
+}
+
+export const useMenusRepository = () => {
+  const api = useApi();
+  return {
+    findAll: (): Promise<Menu[]> => api<Menu[]>("/menus"),
+    findBySlug: (slug: string): Promise<Menu> => api<Menu>(`/menus/${slug}`),
+  };
+};
+```
+
+> Refer to **https://papevi.com/docs** for the full field schemas of each resource.
 
 ## Rules
 
