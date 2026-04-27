@@ -7,7 +7,12 @@
     "perf": "warn",
     "style": "warn"
   },
-  "rules": {},
+  "rules": {
+    "capitalized-comments": "off",
+    "import/no-named-export": "off",
+    "import/prefer-default-export": "off",
+    "unicorn/filename-case": "off"
+  },
   "env": {
     "builtin": true
   }
