@@ -1,0 +1,25 @@
+{
+  "name": "papevi-client-nuxt",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "lint": "oxlint --vue-plugin --import-plugin --promise-plugin --node-plugin .",
+    "lint:fix": "oxlint --vue-plugin --import-plugin --promise-plugin --node-plugin --fix .",
+    "format": "oxfmt . --write",
+    "format:check": "oxfmt . --check",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "^4.4.2",
+    "vue": "^3.5.33",
+    "vue-router": "^5.0.6"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.47.0",
+    "oxlint": "^1.62.0"
+  }
+}
