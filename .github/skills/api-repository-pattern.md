@@ -14,8 +14,8 @@ description: >-
 All HTTP calls to `https://api.papevi.com` follow a two-layer pattern:
 
 ```
-Component / Page
-      │
+Page / Component
+      │  useAsyncData("key", …)   ← SSR cache + deduplication lives here
       ▼
 Repository composable   (app/repositories/use<Resource>Repository.ts)
       │  calls
@@ -103,6 +103,38 @@ export const useMenusRepository = () => {
 ```
 
 > Refer to **https://papevi.com/docs** for the full field schemas of each resource.
+
+## Caching
+
+Repository composables are intentionally **stateless and uncached** — they fire a fresh
+`$fetch` on every call. Caching is handled one layer up by Nuxt's `useAsyncData`
+in pages and components.
+
+`useAsyncData` provides:
+
+- **SSR deduplication** — the request runs once on the server; the result is
+  serialized into the HTML payload so the client never issues a second HTTP request
+  for the same key on initial load.
+- **Key-based deduplication** — concurrent calls with the same key share a single
+  in-flight request.
+- **Navigation cache** — during client-side navigation, data fetched with a key that
+  is still live in the Nuxt payload is reused without a network round-trip.
+
+**Always wrap repository calls in `useAsyncData` with a stable, unique key:**
+
+```ts
+// app/pages/menus.vue
+const { data: menus } = await useAsyncData("menus", () => useMenusRepository().findAll());
+
+// app/pages/[slug].vue
+const route = useRoute();
+const { data: page } = await useAsyncData(`page-${route.params.slug}`, () =>
+  usePagesRepository().findBySlug(route.params.slug as string),
+);
+```
+
+> **Never** call a repository method outside `useAsyncData` (or `useFetch`) in a
+> page or component — you will bypass SSR and spam the API on every render.
 
 ## Rules
 

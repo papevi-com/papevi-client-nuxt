@@ -41,13 +41,29 @@ export default defineNuxtConfig({
 
 ## Data fetching in pages/components
 
-Prefer `useFetch` / `useAsyncData` in pages and components for SSR-aware data
-fetching; use repository composables for the actual API calls.
+Always wrap repository calls in `useAsyncData` — **never** call a repository method
+directly in a page setup without it. `useAsyncData` runs the fetch once on the
+server, embeds the result in the SSR payload, and reuses it on the client so no
+duplicate network request is made.
 
 ```ts
-// app/pages/products.vue
-const { data } = await useFetch(() => useProductsRepository().findAll());
+// app/pages/index.vue — fetch all pages
+const { data: pages } = await useAsyncData("pages", () => usePagesRepository().findAll());
+
+// app/pages/[slug].vue — fetch a single page by route param
+const route = useRoute();
+const { data: page } = await useAsyncData(`page-${route.params.slug}`, () =>
+  usePagesRepository().findBySlug(route.params.slug as string),
+);
+
+// app/app.vue — fetch the main navigation menu once
+const { data: menu } = await useAsyncData("menu-main", () =>
+  useMenusRepository().findBySlug("main"),
+);
 ```
+
+Keys must be **stable and unique** across the app — a colliding key will return
+the wrong cached data.
 
 ## Linter rules disabled for Nuxt compatibility
 
