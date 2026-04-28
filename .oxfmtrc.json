@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": true,
+  "singleQuote": false,
+  "singleAttributePerLine": false,
+  "htmlWhitespaceSensitivity": "css",
+  "printWidth": 120,
+  "sortImports": false,
+  "tabWidth": 2,
+  "sortPackageJson": false,
+  "ignorePatterns": ["node_modules", ".nuxt", ".output", "dist", "coverage"],
+  "overrides": [
+    {
+      "files": ["**/*.yml"],
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
+}
