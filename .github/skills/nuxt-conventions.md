@@ -57,9 +57,7 @@ const { data: page } = await useAsyncData(`page-${route.params.slug}`, () =>
 );
 
 // app/app.vue — fetch the main navigation menu once
-const { data: menu } = await useAsyncData("menu-main", () =>
-  useMenusRepository().findBySlug("main"),
-);
+const { data: menu } = await useAsyncData("menu-main", () => useMenusRepository().findBySlug("main"));
 ```
 
 Keys must be **stable and unique** across the app — a colliding key will return
